@@ -116,3 +116,6 @@
   background-color: green;
   color: #fff;
 }
+.error-message {
+  color: red;
+}

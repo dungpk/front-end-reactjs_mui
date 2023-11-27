@@ -28,14 +28,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
         <div
           style={{
-            // border: '1px solid black',
             position: 'absolute',
             top: 0,
             left: 0,
             width: '280px',
             height: '100vh',
+            overflow: 'auto',
+            scrollbarWidth: 'thin',
           }}
         >
+          <style>
+            {`
+    ::-webkit-scrollbar {
+      width: 10px; /* Chiều rộng của thanh cuộn */
+      height:20px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: 'white'; /* Màu nền của thanh cuộn */
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #DDDDDD; /* Màu của thanh cuộn */
+      border-radius: 3px; /* Đường viền cong của thanh cuộn */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #DDDDDD; /* Màu của thanh cuộn khi hover */
+    }
+    `}
+          </style>
           <MenuLeft />
         </div>
         <div

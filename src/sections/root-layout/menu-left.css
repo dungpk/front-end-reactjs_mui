@@ -15,10 +15,15 @@
   cursor: pointer;
 }
 
+.custom-link {
+  border-radius: 4px;
+}
 .center-name:hover {
   background-color: rgb(200, 200, 200);
 }
-
+.custom-icon {
+  font-size: 1.5rem;
+}
 .center-name-icon {
   display: flex;
   width: 30px;
@@ -30,6 +35,7 @@
   font-weight: bold;
   border-radius: 50%;
 }
+
 
 .center-name-text {
   width: 80%;
@@ -54,6 +60,7 @@
   flex-direction: column;
   margin-bottom: 20px;
 }
+
 
 .content{
   display: flex;
@@ -108,5 +115,41 @@
 .dropdown-container li:hover {
   background-color: rgb(231, 243, 231);
   color: rgb(6, 180, 58);
+}
+
+
+.selected-list-item-button {
+  background-color:rgb(215, 243, 222);
+  border-radius: 30px;
+  /* Thêm các thuộc tính CSS khác tùy ý */
+}
+
+.selected-list-item-button .custom-icon {
+  color: black;
+  border-radius: 30px;
+  border: 'red';
+}
+
+.selected-list-item-button .custom-text {
+  color: lightblue;
+  border-radius: 30px;
+}
+
+.title {
+  font-size: 16px; /* Kích thước font chữ */
+  font-weight: bold; /* Độ đậm của font chữ */
+  color: rgb(221, 88, 88);
+  font-family: Arial, sans-serif; /* Font chữ */
+}
+
+.subtitle {
+  font-size: 18px; /* Kích thước font chữ */
+  font-weight: bold; /* Độ đậm của font chữ */
+  color: rgb(146, 136, 136);
+  font-family: Arial, sans-serif; /* Font chữ */
+}
+
+#ant-center {
+  height: 100%; /* Chiều cao của div */
 }
 
