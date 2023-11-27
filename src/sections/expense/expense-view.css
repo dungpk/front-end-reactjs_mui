@@ -1,0 +1,86 @@
+.table-container {
+  overflow-x: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  border: 1px solid #888;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border: none;
+  border-collapse: collapse;
+}
+
+.table-container td,
+.table-container th {
+  padding: 8px;
+}
+
+.table-container > .table-head {
+  background-color: #ddd;
+}
+
+.table-container tr:hover {
+  background-color: #ddd;
+}
+
+.table-container th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #efefef;
+  color: #333;
+}
+
+.dense-rows td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 16px;
+}
+
+.btn-export {
+  color: green;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #333;
+  margin-right: 10px;
+  font-weight: 800;
+}
+
+.select-form {
+  padding: 10px 30px;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+
+.date-picker {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #333;
+}
+
+.btn-group > .btn {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background-color: #fff;
+  color: green;
+  font-weight: 700;
+}
+
+.btn-group > .btn-green {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  color: #fff;
+  background-color: green;
+  font-weight: 700;
+}
+

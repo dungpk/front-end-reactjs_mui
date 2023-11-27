@@ -1,0 +1,112 @@
+.center-name {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 7%;
+  margin-right: 7%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  background-color: rgb(230, 227, 227);
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.center-name:hover {
+  background-color: rgb(200, 200, 200);
+}
+
+.center-name-icon {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(15, 178, 243);
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  border-radius: 50%;
+}
+
+.center-name-text {
+  width: 80%;
+}
+
+.center-name-text > div {
+  margin-bottom: 5px;
+}
+
+.center-name-text > div:last-child {
+  font-size: 12px;
+  color: gray;
+}
+
+.nav-bar {
+  margin-left: 7%;
+  margin-right: 7%;
+}
+
+.element{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.content{
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.content:hover {
+  background-color: rgb(231, 243, 231);
+}
+.content:hover p {
+  color: rgb(6, 180, 58);
+}
+
+.content p {
+  display: flex;
+  width: 80%;
+  margin-left: 5%;
+  justify-content: start;
+  align-items: center;
+  font-weight: bold;
+  color: gray;
+}
+
+.content svg {
+  width: 20%;
+}
+
+.arrow-container {
+  color:grey;
+  width: 20%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.dropdown-container {
+  margin-left: 15%;
+  cursor: pointer;
+}
+
+.dropdown-container li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}
+
+.dropdown-container li:hover {
+  background-color: rgb(231, 243, 231);
+  color: rgb(6, 180, 58);
+}
+
