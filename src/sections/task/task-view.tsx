@@ -14,6 +14,7 @@ import AdapterDateFns from '@date-io/date-fns'; // Adapter cho thư viện ngày
 import { TextField } from '@mui/material'; // Import TextField để sử dụng trong renderInput
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import SearchIcon from '@mui/icons-material/Search';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import { alpha } from '@mui/material/styles';
 import TableCell from '@mui/material/TableCell';
@@ -49,6 +50,7 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
+import { TaskAddFormDialog } from './add-task-modal';
 
 interface Data {
   id: number;
@@ -290,7 +292,7 @@ export const Task = () => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [elementOfPage, setElementOfPage] = React.useState(0);
+  const [openAddTask,setOpenAddTask] =  React.useState<boolean>(false);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -370,9 +372,11 @@ export const Task = () => {
               variant="contained"
               color="success"
               style={{ borderColor: 'rgb(6, 180, 58)', backgroundColor: 'rgb(6, 180, 58)' }}
+              onClick={() => setOpenAddTask(true)}
             >
               <AddIcon /> Thêm Công Việc
             </Button>
+            {openAddTask && <TaskAddFormDialog open={true} onClose={() => setOpenAddTask(false)} />}
           </div>
         </div>
         <div className="toolbar-task"></div>
@@ -521,11 +525,8 @@ export const Task = () => {
                           <TableCell align="right">{row.carbs}</TableCell>
                           <TableCell align="right">{row.protein}</TableCell>
                           <TableCell align="right">
-                            <IconButton
-                              color={openPopover ? 'inherit' : 'default'}
-                              onClick={handleOpenPopover}
-                            >
-                              <Iconify icon="eva:more-vertical-fill" />
+                            <IconButton>
+                              <MoreVertIcon />
                             </IconButton>
                           </TableCell>
                         </TableRow>

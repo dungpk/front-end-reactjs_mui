@@ -414,15 +414,15 @@ export const ExpenseView = () => {
           <button className="btn-green" onClick={() => setOpen(true)} style={{ marginLeft: 8 }}>
             Thêm mới phiếu chi
           </button>
-          {open && <ExpenseFormDialog open={true} onClose={() => setOpen(false)} />}
-          {/* {open && (
+          {/* {open && <ExpenseFormDialog open={true} onClose={() => setOpen(false)} />} */}
+          {open && (
             <Dialog
               onClose={() => {
                 setOpen(false);
               }}
               addItem={handleAddData}
             />
-          )} */}
+          )}
         </div>
       </div>
       <div style={{ paddingBottom: 16 }}>

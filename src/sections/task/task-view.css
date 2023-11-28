@@ -3,10 +3,11 @@
     flex-direction: column; /* Các phần tử con nằm theo chiều dọc */
     align-items: center;
     justify-content: center; /* Căn giữa theo trục dọc */
-    padding: 18px;
-    padding-left: 80px;
-    padding-right: 80px;
-    width: 1650px;
+
+    padding-left: 40px;
+    padding-right: 40px;
+    /* width: 1650px; */
+    width: auto;
     font-family: Lexend;
   }
   
