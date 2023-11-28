@@ -30,6 +30,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import { FiberManualRecord } from '@mui/icons-material';
+import Image from 'next/image';
 
 export const MenuLeft = () => {
   const router = useRouter();
@@ -88,7 +89,7 @@ export const MenuLeft = () => {
           height: '10vh',
         }}
       >
-        <a href="#about" style={{ fontSize: '45px' }}>
+      <a href="#about" style={{ fontSize: '30px', fontWeight:'bold',fontFamily:'Lexend, sans-serif'}}>
           ANT<span style={{ color: 'red' }}>.</span>Center
         </a>
       </div>
@@ -971,7 +972,15 @@ export const MenuLeft = () => {
         </List>
       </div>
       <div className="footer-nav">
-        <div className="image-container">footer</div>
+      <div className="image-container">
+          <Image
+            src="/image/img_ant.jpg"
+            alt="Footer Image"
+            width={199}
+            height={156}
+          />
+        </div>
+
       </div>
     </div>
   );

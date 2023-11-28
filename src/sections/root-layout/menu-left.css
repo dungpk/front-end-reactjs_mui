@@ -5,8 +5,7 @@
   align-items: center;
   margin-left: 7%;
   margin-right: 7%;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   background-color: rgb(230, 227, 227);
   padding: 10px;
   border-radius: 6px;
@@ -153,3 +152,21 @@
   height: 100%; /* Chiều cao của div */
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}

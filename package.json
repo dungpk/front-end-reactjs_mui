@@ -16,6 +16,7 @@
     "@types/lodash": "^4.14.202",
     "lodash": "^4.17.21",
     "next": "14.0.3",
+    "next-google-fonts": "^2.2.0",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.12.0",

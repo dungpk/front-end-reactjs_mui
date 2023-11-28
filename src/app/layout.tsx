@@ -2,6 +2,11 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { MenuLeft } from '@/sections/root-layout/menu-left';
+import { IoSettingsSharp } from 'react-icons/io5';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import { Button } from '@mui/material';
+import Image from 'next/image';
+import { WidthFull } from '@mui/icons-material';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,9 +27,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             left: '280px',
             width: 'calc(100% - 280px)',
             height: '60px',
+            display:'flex',
+            justifyContent: 'flex-end',
+            paddingLeft: '40px',
+           paddingRight:  '40px',
           }}
         >
-          header
+         <div className='header'>
+          <div className='header-element'>
+          <NotificationsActiveIcon/>
+          </div>
+          <div className='header-element'>
+          <Button variant="contained" disableElevation style={{ backgroundColor: 'white' }}>
+            <Image  src="/image/vietnam.png" width={24}
+            height={24}alt="Button Image" />
+          </Button>
+          </div>
+          <div className='header-element'>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',width:'33px' }}  > 
+            <Button variant="contained" disableElevation style={{ backgroundColor: 'orange', borderRadius: '50%' }}>
+              <span style={{ color: 'white', fontWeight: 'bold', fontSize: '12px' }}>P</span>
+            </Button>
+             </div>  
+          </div>
+        
+         </div>
         </div>
         <div
           style={{
