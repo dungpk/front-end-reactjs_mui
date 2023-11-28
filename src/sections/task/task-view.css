@@ -1,0 +1,34 @@
+.task-component {
+    display: flex;
+    flex-direction: column; /* Các phần tử con nằm theo chiều dọc */
+    align-items: center;
+    justify-content: center; /* Căn giữa theo trục dọc */
+    padding: 18px;
+    padding-left: 80px;
+    padding-right: 80px;
+    width: 1650px;
+    font-family: Lexend;
+  }
+  
+  .task-component > div {
+    margin: 5px 0; /* Khoảng cách 20px giữa các phần tử con */
+    width: 100%;
+    display: flex;
+  }
+
+ .task-header{
+    display: flex;
+    margin-bottom: 0px ;
+    width: 100%;
+    top: 0;
+    
+ }
+
+ .toolbar-task{
+  padding:16px;
+ }
+.table-task{
+  margin: 10px;
+  padding: 10px;
+}
+

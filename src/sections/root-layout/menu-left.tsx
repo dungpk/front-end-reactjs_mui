@@ -17,7 +17,7 @@ import { LiaChalkboardTeacherSolid } from 'react-icons/lia';
 import { SiPrecommit } from 'react-icons/si';
 import { IoSettingsSharp } from 'react-icons/io5';
 import { RiQuestionnaireLine } from 'react-icons/ri';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
 import * as React from 'react';
 import ListSubheader from '@mui/material/ListSubheader';
@@ -89,7 +89,10 @@ export const MenuLeft = () => {
           height: '10vh',
         }}
       >
-      <a href="#about" style={{ fontSize: '30px', fontWeight:'bold',fontFamily:'Lexend, sans-serif'}}>
+        <a
+          href="#about"
+          style={{ fontSize: '30px', fontWeight: 'bold', fontFamily: 'Lexend, sans-serif' }}
+        >
           ANT<span style={{ color: 'red' }}>.</span>Center
         </a>
       </div>
@@ -402,7 +405,7 @@ export const MenuLeft = () => {
                 </ListItemButton>
               </Link>
 
-              <Link href="/">
+              <Link href="/expense">
                 <ListItemButton
                   className={
                     selectedItem === 'genus list' ? 'selected-list-item-button' : 'list-item-button'
@@ -972,15 +975,23 @@ export const MenuLeft = () => {
         </List>
       </div>
       <div className="footer-nav">
-      <div className="image-container">
-          <Image
-            src="/image/img_ant.jpg"
-            alt="Footer Image"
-            width={199}
-            height={156}
-          />
+        <div className="image-container">
+          <Image src="/image/img_ant.jpg" alt="Footer Image" width={199} height={156} />
         </div>
+        <div style={{ fontSize: '18px', marginBottom: '10px', marginTop: '20px' }}>
+          Chào, Phùng Khắc Dũng
+        </div>
+        <div className="footer-element">Cần giúp đỡ?</div>
+        <div className="footer-element">Vui lòng xem tài liệu của</div>
+        <div className="footer-element">chúng tôi.</div>
 
+        <div style={{ marginBottom: '40px', marginTop: '20px' }}>
+          <Link href="/https://help.ant-center.com/" target="_blank">
+            <Button variant="contained" color="success">
+              Tài Liệu
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

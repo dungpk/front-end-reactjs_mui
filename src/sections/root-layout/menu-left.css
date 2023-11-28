@@ -138,14 +138,14 @@
   font-size: 16px; /* Kích thước font chữ */
   font-weight: bold; /* Độ đậm của font chữ */
   color: rgb(221, 88, 88);
-  font-family: Arial, sans-serif; /* Font chữ */
+  font-family: Lexend, sans-serif; /* Font chữ */
 }
 
 .subtitle {
   font-size: 18px; /* Kích thước font chữ */
   font-weight: bold; /* Độ đậm của font chữ */
   color: rgb(146, 136, 136);
-  font-family: Arial, sans-serif; /* Font chữ */
+  font-family: Lexend, sans-serif; /* Font chữ */
 }
 
 #ant-center {
@@ -165,8 +165,14 @@
 }
 
 .footer-nav {
+  font-family: Lexend;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; /* Các div con nằm trên hàng dọc */
+  align-items: center; /* Căn giữa theo trục ngang */
+}
 
+.footer-element{
+  font-size: 16px;
+  color: grey;
+  padding: 2px;
 }

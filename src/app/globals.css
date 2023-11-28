@@ -42,7 +42,22 @@ a {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  position: fixed;
+  z-index: 9999;
+  opacity: 0.9;
 }
 .image-container{
   background-color: white;
+}
+
+.avatar-icon {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  background-color: orange;
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  border-radius: 50%;
 }
