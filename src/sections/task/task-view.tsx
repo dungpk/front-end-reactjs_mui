@@ -49,8 +49,9 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TaskAddFormDialog } from './add-task-modal';
+import { TaskViewGroupDialog } from './group-task-view-modal';
 
 interface Data {
   id: number;
@@ -200,7 +201,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   };
 
   return (
-    <TableHead>
+    <TableHead sx={{ backgroundColor: '#F4F6F8' }}>
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
@@ -243,46 +244,6 @@ interface EnhancedTableToolbarProps {
   numSelected: number;
 }
 
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
-          Danh Sách
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-}
-
 export const Task = () => {
   const options = ['Option 1', 'Option 2', 'Option 3'];
 
@@ -292,7 +253,8 @@ export const Task = () => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [openAddTask,setOpenAddTask] =  React.useState<boolean>(false);
+  const [openAddTask, setOpenAddTask] = React.useState<boolean>(false);
+  const [openGroupTask, setOpenGroupTask] = React.useState<boolean>(false);
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -355,6 +317,8 @@ export const Task = () => {
     [order, orderBy, page, rowsPerPage],
   );
 
+  useEffect(() => {}, [openAddTask, openGroupTask]);
+
   return (
     <>
       <div className="task-component">
@@ -365,9 +329,13 @@ export const Task = () => {
               variant="outlined"
               color="success"
               style={{ color: 'rgb(6, 180, 58)', borderColor: 'rgb(6, 180, 58)' }}
+              onClick={() => setOpenGroupTask(true)}
             >
               <SettingsIcon /> Cài Đặt Nhóm
             </Button>
+            {openGroupTask && (
+              <TaskViewGroupDialog open={true} onClose={() => setOpenGroupTask(false)} />
+            )}
             <Button
               variant="contained"
               color="success"
@@ -453,7 +421,10 @@ export const Task = () => {
             label="Tìm Kiếm"
             fullWidth
             placeholder="Tìm Kiếm"
-            sx={{ m: 1, minWidth: 500 }}
+            sx={{
+              m: 1,
+              minWidth: 500,
+            }}
             // value={preFilter}
             // onChange={(e) => setPreFilter(e.target.value)}
             // onKeyDown={(e) => {
@@ -475,8 +446,7 @@ export const Task = () => {
 
         <div className="table-task">
           <Box sx={{ width: '100%' }}>
-            <Paper sx={{ width: '100%', mb: 2 }}>
-              <EnhancedTableToolbar numSelected={selected.length} />
+            <Paper sx={{ width: '100%', mb: 2, borderRadius: 8, overflow: 'hidden' }} elevation={4}>
               <TableContainer>
                 <Table
                   sx={{ minWidth: 730 }}

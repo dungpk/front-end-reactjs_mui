@@ -62,27 +62,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             scrollbarWidth: 'thin',
           }}
         >
-          <style>
-            {`
-    ::-webkit-scrollbar {
-      width: 10px; /* Chiều rộng của thanh cuộn */
-      height:20px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background-color: 'white'; /* Màu nền của thanh cuộn */
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background-color: #DDDDDD; /* Màu của thanh cuộn */
-      border-radius: 3px; /* Đường viền cong của thanh cuộn */
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: #DDDDDD; /* Màu của thanh cuộn khi hover */
-    }
-    `}
-          </style>
           <MenuLeft />
         </div>
         <div
@@ -90,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             position: 'absolute',
             top: '60px',
             left: '280px',
+            width: 'calc(100% - 280px)',
           }}
         >
           {children}

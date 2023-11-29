@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import './menu-left.css';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
 import { GrOverview } from 'react-icons/gr';
 import { LuCircleDollarSign } from 'react-icons/lu';
@@ -31,6 +31,39 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import { FiberManualRecord } from '@mui/icons-material';
 import Image from 'next/image';
+
+interface ItemChild {
+  label?: string;
+  href?: string;
+}
+interface ItemParent {
+  icon?: ReactNode;
+  label?: string;
+  href?: string;
+  childs?: ItemChild[];
+}
+
+var Menu_Left_Data_Config: ItemParent[] = [
+  {
+    icon: <GrOverview />,
+    label: 'Tổng quan',
+  },
+  {
+    icon: <AiOutlineAlignLeft />,
+    label: 'Tuyển sinh',
+    href: '',
+    childs: [
+      {
+        label: 'Danh sách liên hệ',
+        href: '',
+      },
+      {
+        label: 'Danh sách học thử',
+        href: '',
+      },
+    ],
+  },
+];
 
 export const MenuLeft = () => {
   const router = useRouter();
@@ -71,6 +104,9 @@ export const MenuLeft = () => {
   const handleItemClick = (item: string) => {
     setSelectedItem(item);
   };
+  const pathName = usePathname();
+
+  console.log(pathName);
 
   return (
     <div
@@ -207,7 +243,9 @@ export const MenuLeft = () => {
               sx={{
                 borderRadius: '10px',
               }}
-              className={selectedItem === 'task' ? 'selected-list-item-button' : 'list-item-button'}
+              className={
+                pathName.includes('/task') ? 'selected-list-item-button' : 'list-item-button'
+              }
               onClick={() => handleItemClick('task')}
             >
               <ListItemIcon className="custom-icon">
