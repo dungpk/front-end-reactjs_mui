@@ -30,8 +30,6 @@ export interface SimpleDialogProps {
   onClose: () => void;
 }
 export const TaskAddFormDialog = ({ open, onClose }: SimpleDialogProps) => {
-
-
   const [fromDate, setFromDate] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
   const [createDate, setCreateDate] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
   const [toDate, setToDate] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
@@ -55,15 +53,12 @@ export const TaskAddFormDialog = ({ open, onClose }: SimpleDialogProps) => {
     title: Yup.string().required('Vui lòng nhập tiêu đề'),
   });
 
-
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
-       
-          const response = await fetch('https://localhost:7162/api/Home/listgroupTask');
-          const data = await response.json();
-          setGroupList(data);
+        const response = await fetch('https://localhost:7162/api/Home/listgroupTask');
+        const data = await response.json();
+        setGroupList(data);
       } catch (error) {
         alert('khong lay duoc du lieu');
       }
@@ -81,16 +76,15 @@ export const TaskAddFormDialog = ({ open, onClose }: SimpleDialogProps) => {
       creator: 'Nguyễn Trung Hiếu',
       status: 'Đang thực hiện',
       createdDate: '2023-04-17',
-      fromDate:'2022-04-17',
-      toDate:  dayjs('2022-04-17'), 
+      fromDate: '2022-04-17',
+      toDate: dayjs('2022-04-17'),
       title: 'tiêu đề',
       content: 'no content',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-
       const missionObject: MissionQuery = {
-        id:  uuidv4(),
+        id: uuidv4(),
         phoneStudent: values.phoneStudent,
         nameStudent: values.nameStudent,
         creator: values.creator,
@@ -98,15 +92,13 @@ export const TaskAddFormDialog = ({ open, onClose }: SimpleDialogProps) => {
         implementer: values.implementer,
         status: values.status,
         groupTaskId: values.groupTaskId,
-        createdDate: createDate?.format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") || '',
-        toDate: toDate?.format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") || '',
-        fromDate: fromDate?.format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") || '',
-        content:values.content
+        createdDate: createDate?.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') || '',
+        toDate: toDate?.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') || '',
+        fromDate: fromDate?.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') || '',
+        content: values.content,
       };
 
-      
-
-      fetch('https://localhost:7162/api/Home/mision', {
+      fetch('https://localhost:7162/api/Home/mission', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,18 +127,16 @@ export const TaskAddFormDialog = ({ open, onClose }: SimpleDialogProps) => {
     },
   });
 
-  const handleToDateChange = (date:Date) => {
+  const handleToDateChange = (date: Date) => {
     formik.setFieldValue('toDate', date);
   };
 
-
-
   return (
     <Dialog onClose={handleClose} open={open} maxWidth="md" fullWidth>
-      <DialogTitle style={{ fontWeight: 'bold',padding:'20px' }}>Thêm mới công việc</DialogTitle>
+      <DialogTitle style={{ fontWeight: 'bold', padding: '20px' }}>Thêm mới công việc</DialogTitle>
       <DialogContent style={{ margin: '10px' }}>
         <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={2} style={{ padding:'20px' }}>
+          <Grid container spacing={2} style={{ padding: '20px' }}>
             <Grid item xs={6}>
               <TextField
                 name="phoneStudent"
@@ -160,122 +150,150 @@ export const TaskAddFormDialog = ({ open, onClose }: SimpleDialogProps) => {
               />
             </Grid>
             <Grid item xs={6}>
-            <FormControl fullWidth error={formik.touched.groupTaskId && Boolean(formik.errors.groupTaskId)}>
-              <InputLabel>Nhóm công việc*</InputLabel>
-              <Select
-                name="groupTaskId"
-                value={formik.values.groupTaskId}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+              <FormControl
+                fullWidth
+                error={formik.touched.groupTaskId && Boolean(formik.errors.groupTaskId)}
               >
-                {groupList.map((task) => (
-                  <MenuItem key={task.id} value={task.id}>
-                    {task.nameGroup}
-                  </MenuItem>
-                ))}
-              </Select>
-              {formik.touched.groupTaskId && formik.errors.groupTaskId && (
-                <FormHelperText error>{formik.errors.groupTaskId}</FormHelperText>
-              )}
-            </FormControl>
+                <InputLabel>Nhóm công việc*</InputLabel>
+                <Select
+                  name="groupTaskId"
+                  value={formik.values.groupTaskId}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  {groupList.map((task) => (
+                    <MenuItem key={task.id} value={task.id}>
+                      {task.nameGroup}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {formik.touched.groupTaskId && formik.errors.groupTaskId && (
+                  <FormHelperText error>{formik.errors.groupTaskId}</FormHelperText>
+                )}
+              </FormControl>
             </Grid>
             <Grid item xs={6}>
-              <TextField   name="nameStudent"
+              <TextField
+                name="nameStudent"
                 label="Họ và tên học viên*"
                 fullWidth
                 value={formik.values.nameStudent}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.nameStudent && Boolean(formik.errors.nameStudent)}
-                helperText={formik.touched.nameStudent && formik.errors.nameStudent} />
+                helperText={formik.touched.nameStudent && formik.errors.nameStudent}
+              />
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth>
-              <TextField  name="implementer"
-                label="Người thực hiện*"
-                fullWidth
-                value={formik.values.implementer}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.implementer && Boolean(formik.errors.implementer)}
-                helperText={formik.touched.implementer && formik.errors.implementer} /> 
+                <TextField
+                  name="implementer"
+                  label="Người thực hiện*"
+                  fullWidth
+                  value={formik.values.implementer}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.implementer && Boolean(formik.errors.implementer)}
+                  helperText={formik.touched.implementer && formik.errors.implementer}
+                />
               </FormControl>
             </Grid>
             <Grid item xs={6}>
-              <TextField  name="creator"
+              <TextField
+                name="creator"
                 label="Người tạo*"
                 fullWidth
                 value={formik.values.creator}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.creator && Boolean(formik.errors.creator)}
-                helperText={formik.touched.creator && formik.errors.creator} />
+                helperText={formik.touched.creator && formik.errors.creator}
+              />
             </Grid>
             <Grid item xs={6}>
-            <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)}>
+              <FormControl fullWidth error={formik.touched.status && Boolean(formik.errors.status)}>
                 <InputLabel>Trạng thái*</InputLabel>
-                <Select  name="status"
-                         value={formik.values.status}
-                         onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}>
+                <Select
+                  name="status"
+                  value={formik.values.status}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
                   <MenuItem value="Chưa bắt đầu">Chưa bắt đầu</MenuItem>
                   <MenuItem value="Đang xử lý">Đang xử lý</MenuItem>
                   <MenuItem value="Hủy">Hủy</MenuItem>
                   <MenuItem value="Hoàn Thành">Hoàn Thành</MenuItem>
                 </Select>
                 {formik.touched.status && formik.errors.status && (
-                <FormHelperText error>{formik.errors.status}</FormHelperText>
-              )}
+                  <FormHelperText error>{formik.errors.status}</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item xs={6}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker', 'DatePicker']}>
-              <DatePicker  label="Ngày khởi tạo" value={createDate}
-          onChange={(newValue) => setCreateDate(newValue)}  sx={{ width: '100%' }}/>
-            </DemoContainer>
-            </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DatePicker', 'DatePicker']}>
+                  <DatePicker
+                    label="Ngày khởi tạo"
+                    value={createDate}
+                    onChange={(newValue) => setCreateDate(newValue)}
+                    sx={{ width: '100%' }}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker', 'DatePicker']}>
-              <DatePicker label="Ngày bắt đầu" value={fromDate}
-          onChange={(newValue) => setFromDate(newValue)}    sx={{ width: '100%' }}/>
-            </DemoContainer>
-          </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={['DatePicker', 'DatePicker']}>
+                    <DatePicker
+                      label="Ngày bắt đầu"
+                      value={fromDate}
+                      onChange={(newValue) => setFromDate(newValue)}
+                      sx={{ width: '100%' }}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
               </FormControl>
             </Grid>
             <Grid item xs={6}>
-              <TextField  
-              name = "title"
-              label="Tiêu đề*"
+              <TextField
+                name="title"
+                label="Tiêu đề*"
                 fullWidth
                 value={formik.values.title}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.title && Boolean(formik.errors.title)}
-                helperText={formik.touched.title && formik.errors.title} />
+                helperText={formik.touched.title && formik.errors.title}
+              />
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker', 'DatePicker']}>
-              <DatePicker  value={toDate}
-          onChange={(newValue) => setToDate(newValue)}  label="Ngày kết thúc"  sx={{ width: '100%' }}/>
-            </DemoContainer>
-          </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer components={['DatePicker', 'DatePicker']}>
+                    <DatePicker
+                      value={toDate}
+                      onChange={(newValue) => setToDate(newValue)}
+                      label="Ngày kết thúc"
+                      sx={{ width: '100%' }}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <TextField  name = "content"
-               label="Nội dung*"
+              <TextField
+                name="content"
+                label="Nội dung*"
                 fullWidth
                 value={formik.values.content}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.content && Boolean(formik.errors.content)}
-                helperText={formik.touched.content && formik.errors.content} multiline rows={4} />
+                helperText={formik.touched.content && formik.errors.content}
+                multiline
+                rows={4}
+              />
             </Grid>
             <Grid item xs={12}>
               <Grid container justifyContent="flex-end" spacing={2}>

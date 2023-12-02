@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@mui/material';
+import { Button, SelectChangeEvent } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/Add';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -33,7 +33,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
-
 import {
   Autocomplete,
   Box,
@@ -52,13 +51,13 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import { TaskAddFormDialog } from './add-task-modal';
 import { TaskViewGroupDialog } from './group-task-view-modal';
 import { GroupTask, Mission } from './type';
 import { TaskEditFormDialog } from './edit-task-modal';
 import { TaskViewFormDialog } from './view-task-modal';
-
+import { TaskDeleteFormDialog } from './delete-task-modal';
 
 // function createData(
 //   id: string,
@@ -77,6 +76,15 @@ import { TaskViewFormDialog } from './view-task-modal';
 //   };
 // }
 
+export interface filerElement {
+  toDate?: string;
+  fromDate?: string;
+  implementer?: string;
+  status?: string;
+  createdDate?: string;
+  phoneStudent?: string;
+  groupTaskId?: string;
+}
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -117,7 +125,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Mission ;
+  id: keyof Mission;
   label: string;
   numeric: boolean;
   groupTaskId?: keyof GroupTask;
@@ -144,27 +152,27 @@ const headCells: readonly HeadCell[] = [
   },
   {
     id: 'implementer',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Người thực hiện',
   },
   {
     id: 'toDate',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Hạn hoàn thành',
   },
   {
     id: 'title',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Tiêu đề',
   },
   {
     id: 'title',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
-    label: 'Action',
+    label: 'Action: delete ,update ,view',
   },
 ];
 
@@ -186,15 +194,13 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead sx={{ backgroundColor: '#F4F6F8' }}>
       <TableRow>
-        <TableCell padding="checkbox">
-          
-        </TableCell>
+        <TableCell padding="checkbox"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}u
+            sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -220,9 +226,9 @@ interface EnhancedTableToolbarProps {
 }
 
 export const Task = () => {
-const [rows, setRow] = useState<Mission[]>([])
+  const [rows, setRow] = useState<Mission[]>([]);
 
-  const options = ['Option 1', 'Option 2', 'Option 3'];
+  const options = ['Phùng Khắc Dũng', 'Nguyễn Trung Hiếu', 'Phạm Việt Trung'];
 
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Mission>('toDate');
@@ -231,23 +237,60 @@ const [rows, setRow] = useState<Mission[]>([])
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-
-
   const [openAddTask, setOpenAddTask] = React.useState<boolean>(false);
   const [openGroupTask, setOpenGroupTask] = React.useState<boolean>(false);
   const [openEditTask, setOpenEditTask] = React.useState<boolean>(false);
   const [openDeleteTask, setOpenDeleteTask] = React.useState<boolean>(false);
   const [openViewTask, setOpenViewTask] = React.useState<boolean>(false);
 
+  const [selectedRowId, setSelectedRowId] = useState<string>();
+  const [groupList, setGroupList] = useState<GroupTask[]>([]);
 
+  const [toDate, setToDate] = React.useState<Dayjs | null>(dayjs('1998-04-01'));
+  const [fromDate, setFromDate] = React.useState<Dayjs | null>(dayjs('2024-04-01'));
+  const [groupTaskId, setGroupTaskId] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
+  const [implementer, setImplementer] = useState<string>('');
+  const [search, setSearch] = useState<string>('');
 
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    const value = event.target.value;
+    console.log(value);
+    setGroupTaskId(value);
+    handleFilter();
+  };
+
+  const handleSlectedStatus = (event: SelectChangeEvent<string>) => {
+    const value = event.target.value;
+    console.log(event.target.value);
+    setStatus(value);
+    handleFilter();
+  };
+
+  const handleSelectedImplementerChange: ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (event) => {
+    const value = event.target.value;
+    console.log(value);
+    setImplementer(value);
+    handleFilter();
+  };
+
+  const handleSearchChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (
+    event,
+  ) => {
+    const value = event.target.value;
+    console.log(value);
+    setSearch(value);
+    handleFilter();
+  };
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Mission) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
+
     setOrderBy(property);
   };
-
 
   const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
     const selectedIndex = selected.indexOf(id);
@@ -285,6 +328,39 @@ const [rows, setRow] = useState<Mission[]>([])
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const handleFilter = async () => {
+    console.log(toDate?.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') || '');
+    console.log(fromDate?.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') || '');
+    console.log(status);
+
+    const missionObject: filerElement = {
+      phoneStudent: search,
+      implementer: implementer,
+      status: status,
+      groupTaskId: groupTaskId,
+      toDate: toDate?.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') || '',
+      fromDate: fromDate?.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]') || '',
+    };
+
+    try {
+      const response = await fetch('https://localhost:7162/api/Home/filerMission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(missionObject),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setRow(data);
+      } else {
+        console.error('Request failed with status:', response.status);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -292,14 +368,17 @@ const [rows, setRow] = useState<Mission[]>([])
         const response = await fetch('https://localhost:7162/api/Home/missions');
         const data = await response.json();
         setRow(data);
+
+        const responseGroupTask = await fetch('https://localhost:7162/api/Home/listgroupTask');
+        const dataGroupTask = await responseGroupTask.json();
+        setGroupList(dataGroupTask);
       } catch (error) {
-        alert('khong lay duoc du lieu');
+        console.log('khong lay duoc du lieu');
       }
     };
 
     fetchData();
-  }, [openAddTask, openGroupTask]);
-
+  }, [openAddTask, openGroupTask, openDeleteTask, openDeleteTask, openEditTask]);
 
   return (
     <>
@@ -347,59 +426,64 @@ const [rows, setRow] = useState<Mission[]>([])
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DatePicker', 'DatePicker']}>
-              <DatePicker label="Từ ngày" defaultValue={dayjs('2022-04-17')} />
-              <DatePicker label="Tới ngày" defaultValue={dayjs('2022-04-17')} />
+              <DatePicker
+                value={fromDate}
+                onChange={(newValue) => {
+                  setFromDate(newValue);
+                  handleFilter();
+                  console.log(newValue);
+                }}
+                label="Từ ngày"
+              />
+              <DatePicker
+                value={fromDate}
+                onChange={(newValue) => {
+                  setToDate(newValue);
+                  handleFilter();
+                  console.log(newValue);
+                }}
+                label="Tới ngày"
+              />
             </DemoContainer>
           </LocalizationProvider>
         </div>
         <Box mb={2} mx={-1} display="flex" sx={{ flexWrap: 'nowrap', overflowX: 'auto' }}>
           <FormControl sx={{ m: 1, minWidth: 190 }}>
             <InputLabel id="category">Danh Mục</InputLabel>
-            <Select labelId="category" label="Danh Mục">
-              <MenuItem>danh muc a</MenuItem>
-              <MenuItem>danh muc b</MenuItem>
+            <Select onChange={handleSelectChange} labelId="category" label="Danh Mục">
+              <MenuItem> Tất cả </MenuItem>
+              {groupList.map((task) => (
+                <MenuItem key={task.id} value={task.id}>
+                  {task.nameGroup}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl sx={{ minWidth: 150, m: 1 }}>
             <InputLabel id="status">Trạng Thái</InputLabel>
-            <Select labelId="status" label="Trạng Thái">
-              <MenuItem>trạng thái 1</MenuItem>
-              <MenuItem>trạng thái 2</MenuItem>
+            <Select onChange={handleSlectedStatus} labelId="status" label="Trạng Thái">
+              <MenuItem>Tất cả</MenuItem>
+              <MenuItem value="Chưa bắt đầu">Chưa bắt đầu</MenuItem>
+              <MenuItem value="Đang xử lý">Đang xử lý</MenuItem>
+              <MenuItem value="Huỷ">Huỷ</MenuItem>
+              <MenuItem value="Hoàn Thành">Hoàn Thành</MenuItem>
             </Select>
           </FormControl>
           <Stack minWidth={260} m={1}>
             <Autocomplete
               fullWidth
               options={options}
-              renderInput={(params) => <TextField {...params} label="Nguời Thực Hiện" />}
-              // options={employees
-              //   ?.filter((x) => x.status == CenterActiveStatus.Active)
-              //   ?.map((val) => ({
-              //     id: val.id,
-              //     name: `${val.profile.name} ${val.profile.phoneNumber}`,
-              //   }))}
-              // getOptionLabel={(option) => option.name}
-              // value={
-              //   employeeId
-              //     ? {
-              //         id: employeeId,
-              //         name:
-              //           `${employees.find((x) => x.id === employeeId)?.profile.name} ${
-              //             employees.find((x) => x.id === employeeId)?.profile.phoneNumber
-              //           }` || '',
-              //       }
-              //     : null
-              // }
-              // isOptionEqualToValue={(option, value) => option.id === value.id}
-              // onChange={(event, newValue) => {
-              //   setEmployeeId(newValue ? newValue.id : '');
-              // }}
-              // renderInput={(params) => (
-              //   <TextField {...params} label="Người thực hiện" variant="outlined" fullWidth />
-              // )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Nguời Thực Hiện"
+                  onChange={handleSelectedImplementerChange}
+                />
+              )}
             />
           </Stack>
           <TextField
+            onChange={handleSearchChange}
             label="Tìm Kiếm"
             fullWidth
             placeholder="Tìm Kiếm"
@@ -407,13 +491,6 @@ const [rows, setRow] = useState<Mission[]>([])
               m: 1,
               minWidth: 500,
             }}
-            // value={preFilter}
-            // onChange={(e) => setPreFilter(e.target.value)}
-            // onKeyDown={(e) => {
-            //   if (e.key == 'Enter') {
-            //     setFilter(preFilter);
-            //   }
-            // }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -439,7 +516,7 @@ const [rows, setRow] = useState<Mission[]>([])
                     numSelected={selected.length}
                     order={order}
                     orderBy={orderBy}
-                    onSelectAllClick={()=>{}}
+                    onSelectAllClick={() => {}}
                     onRequestSort={handleRequestSort}
                     rowCount={rows.length}
                   />
@@ -450,18 +527,15 @@ const [rows, setRow] = useState<Mission[]>([])
                       return (
                         <TableRow
                           hover
-                          onClick={(event) => ()=>{}}
+                          onClick={(event) => () => {}}
                           role="checkbox"
-           
                           tabIndex={-1}
                           key={row.id}
-                        
                           sx={{ cursor: 'pointer' }}
                         >
                           <TableCell padding="checkbox">
                             <Checkbox
                               color="primary"
-                           
                               inputProps={{
                                 'aria-labelledby': labelId,
                               }}
@@ -471,39 +545,45 @@ const [rows, setRow] = useState<Mission[]>([])
                           <TableCell component="th" id={labelId} scope="row" padding="none">
                             {row.nameStudent}
                           </TableCell>
-                          <TableCell align="right">{row.groupTask?.nameGroup ?? 'Undefined'}</TableCell>
-                          <TableCell align="right">{row.implementer}</TableCell>
-                          <TableCell align="right">{row.toDate}</TableCell>
-                          <TableCell align="right">{row.title}</TableCell>
-                          <TableCell align="right">
-                          <div style={{ display: 'flex', gap: '1px' }}>
-                            <IconButton>
-                              <DeleteIcon />
-                            </IconButton>
-                            <IconButton>
-                             <Button
-                            variant="contained"
-                            color="success"
+                          <TableCell align="left">
+                            {row.groupTask?.nameGroup ?? 'Undefined'}
+                          </TableCell>
+                          <TableCell align="left">{row.implementer}</TableCell>
+                          <TableCell align="left">{row.toDate}</TableCell>
+                          <TableCell align="left">{row.title}</TableCell>
+                          <TableCell align="left">
+                            <div style={{ display: 'flex', gap: '1px' }}>
+                              <Button
+                                color="success"
+                                onClick={() => {
+                                  setOpenDeleteTask(true);
+                                  setSelectedRowId(row.id);
+                                }}
+                              >
+                                <DeleteIcon />
+                              </Button>
 
-                            onClick={() => setOpenEditTask(true)}
-                          >
-                             <EditIcon /> 
-                          </Button>
-                             
-                              {openEditTask && <TaskEditFormDialog missionId={row.id} open={true} onClose={() => setOpenEditTask(false)} />}
-                            </IconButton>
-                            <Button
-                    
-                             color="success"
-                       
-                             onClick={() => setOpenViewTask(true)}
-                           >
-                            
-                              <RemoveRedEyeIcon />
-                            </Button>
-                            {openViewTask && <TaskViewFormDialog missionId={row.id} open={true} onClose={() => setOpenViewTask(false)} />}
-                            
-                          </div>
+                              <IconButton>
+                                <Button
+                                  color="success"
+                                  onClick={() => {
+                                    setSelectedRowId(row.id);
+                                    setOpenEditTask(true);
+                                  }}
+                                >
+                                  <EditIcon />
+                                </Button>
+                              </IconButton>
+                              <Button
+                                color="success"
+                                onClick={() => {
+                                  setSelectedRowId(row.id);
+                                  setOpenViewTask(true);
+                                }}
+                              >
+                                <RemoveRedEyeIcon />
+                              </Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       );
@@ -538,6 +618,28 @@ const [rows, setRow] = useState<Mission[]>([])
         </div>
         <div className="dense-slice"></div>
       </div>
+      {openEditTask && !!selectedRowId && (
+        <TaskEditFormDialog
+          missionId={selectedRowId}
+          open={true}
+          onClose={() => setOpenEditTask(false)}
+        />
+      )}
+      {openViewTask && !!selectedRowId && (
+        <TaskViewFormDialog
+          missionId={selectedRowId}
+          open={true}
+          onClose={() => setOpenViewTask(false)}
+        />
+      )}
+
+      {openDeleteTask && !!selectedRowId && (
+        <TaskDeleteFormDialog
+          missionId={selectedRowId}
+          open={true}
+          onClose={() => setOpenDeleteTask(false)}
+        />
+      )}
     </>
   );
 };

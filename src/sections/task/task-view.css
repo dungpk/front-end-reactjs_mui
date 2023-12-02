@@ -4,8 +4,8 @@
     align-items: center;
     justify-content: center; /* Căn giữa theo trục dọc */
 
-    padding-left: 80px;
-    padding-right: 80px;
+    padding-left: 40px;
+    padding-right: 40px;
     width: 100%; /* Chiều rộng tương ứng với phần tử cha */
     font-family: Lexend;
   }
